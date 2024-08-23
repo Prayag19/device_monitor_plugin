@@ -56,8 +56,8 @@ class MethodChannelDeviceMonitor extends DeviceMonitorPlatform {
 
 
   @override
-  Future<void> isServiceRunning() async {
-    await methodChannel.invokeMethod('isServiceRunning');
+  Future<bool> isServiceRunning() async {
+   return await methodChannel.invokeMethod('isServiceRunning');
   }
 
   Future<void> _handleMethodCall(MethodCall call) async {
