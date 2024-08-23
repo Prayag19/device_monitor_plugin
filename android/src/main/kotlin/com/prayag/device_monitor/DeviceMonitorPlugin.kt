@@ -1,5 +1,5 @@
 package com.prayag.device_monitor
-
+import android.app.ActivityManager
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -101,10 +101,12 @@ class DeviceMonitorPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Acti
     }
 
     private fun isServiceRunning(serviceClass: Class<*>): Boolean {
-        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        for (service in activityManager.getRunningServices(Int.MAX_VALUE)) {
-            if (serviceClass.name == service.service.className) {
-                return true
+        val activityManager = context?.getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager
+        if (activityManager != null) {
+            for (service in activityManager.getRunningServices(Int.MAX_VALUE)) {
+                if (serviceClass.name == service.service.className) {
+                    return true
+                }
             }
         }
         return false
