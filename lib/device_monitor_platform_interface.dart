@@ -41,4 +41,8 @@ abstract class DeviceMonitorPlatform extends PlatformInterface {
   Stream<Map<String, dynamic>> getLocationUpdates() {
     throw UnimplementedError('getLocationUpdates() has not been implemented.');
   }
+
+  Future<void> isServiceRunning() {
+    throw UnimplementedError('pauseService() has not been implemented.');
+  }
 }

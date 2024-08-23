@@ -54,6 +54,12 @@ class MethodChannelDeviceMonitor extends DeviceMonitorPlatform {
     return _locationUpdateController.stream;
   }
 
+
+  @override
+  Future<void> isServiceRunning() async {
+    await methodChannel.invokeMethod('isServiceRunning');
+  }
+
   Future<void> _handleMethodCall(MethodCall call) async {
     if (call.method == 'locationUpdate') {
       final Map<String, dynamic> locationData = Map<String, dynamic>.from(call.arguments);

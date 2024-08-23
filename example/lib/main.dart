@@ -154,22 +154,22 @@ class _TestServiceScreenState extends State<TestServiceScreen> {
                     child: SingleChildScrollView(child: Text(_locationStatus))),
               ],
             ),
-            Column(
-              children: <Widget>[
-                ElevatedButton(
-                  onPressed: () {
-                    readLogFile();
-                  },
-                  child: Text('Load File Content'),
-                ),
-                SizedBox(height: 20),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Text(fileContent),
+              Column(
+                children: <Widget>[
+                  ElevatedButton(
+                    onPressed: () {
+                      readLogFile();
+                    },
+                    child: Text('Load File Content'),
                   ),
-                ),
-              ],
-            )
+                  SizedBox(height: 20),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Text(fileContent),
+                    ),
+                  ),
+                ],
+              )
           ],
         ),
       ),
@@ -201,4 +201,6 @@ class _TestServiceScreenState extends State<TestServiceScreen> {
   void _pauseService() {
     _deviceMonitor.pauseService();
   }
+
+
 }

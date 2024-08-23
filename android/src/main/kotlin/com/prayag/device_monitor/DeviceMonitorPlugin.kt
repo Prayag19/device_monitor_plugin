@@ -70,6 +70,10 @@ class DeviceMonitorPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Acti
                     result.error("PERMISSION_DENIED", "Location permissions are not granted", null)
                 }
             }
+            "isServiceRunning" -> {
+                val isRunning = isServiceRunning(LocationService::class.java)
+                result.success(isRunning)
+            }
 
             "stopService" -> {
                 stopLocationService()
@@ -92,6 +96,16 @@ class DeviceMonitorPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Acti
                 true
             }
             return fineLocationGranted && coarseLocationGranted && backgroundLocationGranted
+        }
+        return false
+    }
+
+    private fun isServiceRunning(serviceClass: Class<*>): Boolean {
+        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in activityManager.getRunningServices(Int.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                return true
+            }
         }
         return false
     }
