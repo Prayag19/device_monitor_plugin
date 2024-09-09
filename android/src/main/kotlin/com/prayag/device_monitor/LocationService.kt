@@ -244,9 +244,11 @@ class LocationService : Service() {
             val serviceChannel = NotificationChannel(
                     channelId,
                     "Location Service Channel",
-                    NotificationManager.IMPORTANCE_DEFAULT
+                    NotificationManager.IMPORTANCE_LOW
             ).apply {
                 description = "Channel for Location Service"
+                setSound(null, null) // Disable sound
+                setVibrationPolicy(VibrationPolicy.DONT_VIBRATE) // Disable vibration / enableVibration(false) /
             }
 
             val manager = getSystemService(NotificationManager::class.java)
