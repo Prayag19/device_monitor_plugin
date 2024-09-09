@@ -20,6 +20,7 @@ import java.io.FileWriter
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import android.content.pm.ServiceInfo;
 
 class LocationService : Service() {
 
@@ -45,7 +46,16 @@ class LocationService : Service() {
 
         createNotificationChannel() // Create the notification channel
         notificationBuilder = createNotificationBuilder()
-        startForeground(1, notificationBuilder.build()) // Start as a foreground service
+        // Start the service as a foreground service
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(
+                    1, // Notification ID
+                    notificationBuilder.build(),
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION // Specify that the service uses location
+            )
+        } else {
+            startForeground(1, notificationBuilder.build())
+        }
 
         // Initialize runnable and start logging task
         startLoggingTask()
@@ -217,11 +227,15 @@ class LocationService : Service() {
 
     // Create the notification builder
     private fun createNotificationBuilder(): NotificationCompat.Builder {
+        val channelId = "location_service_channel" // Ensure this matches the ID used in createNotificationChannel()
+
         return NotificationCompat.Builder(this, channelId)
                 .setContentTitle("Location Service")
                 .setContentText("Tracking your location in the background")
-                .setSmallIcon(android.R.drawable.ic_menu_mylocation)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setSmallIcon(android.R.drawable.ic_menu_mylocation) // Use a valid icon
+                .setPriority(NotificationCompat.PRIORITY_LOW) // Priority should be LOW for background services
+                .setCategory(NotificationCompat.CATEGORY_SERVICE) // Indicate this is a foreground service
+                .setOngoing(true) // Prevents the notification from being swiped away
     }
 
     // Create the notification channel

@@ -3,6 +3,7 @@ import android.app.ActivityManager
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -11,7 +12,7 @@ import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-
+import android.util.Log
 
 class DeviceMonitorPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware {
     private lateinit var channel: MethodChannel
@@ -155,6 +156,7 @@ class DeviceMonitorPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, Acti
             }
 
             serviceIntent.putExtra("geofenceList", ArrayList(geofenceList)) // Pass as ArrayList to Intent
+
 
             // Start the service
             ContextCompat.startForegroundService(it, serviceIntent)
