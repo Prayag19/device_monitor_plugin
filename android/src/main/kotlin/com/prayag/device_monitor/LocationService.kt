@@ -235,7 +235,8 @@ class LocationService : Service() {
                 .setSmallIcon(android.R.drawable.ic_menu_mylocation) // Use a valid icon
                 .setPriority(NotificationCompat.PRIORITY_LOW) // Priority should be LOW for background services
                 .setCategory(NotificationCompat.CATEGORY_SERVICE) // Indicate this is a foreground service
-                .setOngoing(true) // Prevents the notification from being swiped away
+                .setOngoing(true)
+                .setSilent(true)// Prevents the notification from being swiped away
     }
 
     // Create the notification channel
@@ -246,9 +247,9 @@ class LocationService : Service() {
                     "Location Service Channel",
                     NotificationManager.IMPORTANCE_LOW
             ).apply {
-                description = "Channel for Location Service"
-                setSound(null, null) // Disable sound
-                setVibrationPolicy(VibrationPolicy.DONT_VIBRATE) // Disable vibration / enableVibration(false) /
+                description = "Channel for Location Service";
+                setSound(null, null);// Disable soun
+                enableVibration(false)
             }
 
             val manager = getSystemService(NotificationManager::class.java)
