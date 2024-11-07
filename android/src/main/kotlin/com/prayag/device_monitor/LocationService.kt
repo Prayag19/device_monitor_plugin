@@ -108,7 +108,7 @@ class LocationService : Service() {
         Log.d("distanceAccuracy", "$distanceAccuracy")
         val locationRequest = LocationRequest.create().apply {
             interval = setInterval
-            fastestInterval = intent?.getLongExtra("interval", 1800000L) ?: 1800000L
+            fastestInterval = setInterval
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             smallestDisplacement = 0f // Set the smallest displacement
         }
