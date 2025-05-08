@@ -60,10 +60,28 @@ class _TestServiceScreenState extends State<TestServiceScreen> {
     super.initState();
   }
 
+  Future<void> requestStoragePermission() async {
+    // Request permissions
+    var status = await Permission.storage.status;
+
+    if (!status.isGranted) {
+      // If permission not granted, request permission
+      await Permission.storage.request();
+    }
+
+    // If granted, proceed with the operation
+    if (await Permission.storage.isGranted) {
+      print('Storage permission granted!');
+    } else {
+      print('Storage permission denied!');
+    }
+  }
+
   Future<void> readLogFile() async {
+    await requestStoragePermission();
     try {
       // Get the directory where the file is stored
-      final directory = await getExternalStorageDirectory();
+      final directory = await getApplicationDocumentsDirectory();
 
       // Construct the file path
       final filePath = '${directory?.path}/location_battery_log.txt';
@@ -133,8 +151,8 @@ class _TestServiceScreenState extends State<TestServiceScreen> {
                 ..._geofences.map(
                     (entry) => Text('${entry}')),
                 SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                Wrap(
+                 // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
                       onPressed: _startService,

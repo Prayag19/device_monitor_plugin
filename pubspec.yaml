@@ -37,7 +37,9 @@ flutter:
       android:
         package: com.prayag.device_monitor
         pluginClass: DeviceMonitorPlugin
-
+      ios:
+        pluginClass: DeviceMonitorPlugin  # This should be the name of your Swift class for iOS
+        podspec: ios/device_monitor.podspec
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
