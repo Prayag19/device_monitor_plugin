@@ -132,7 +132,7 @@ public class DeviceMonitorPlugin: NSObject, FlutterPlugin, CLLocationManagerDele
             "geofences": [\(geofenceLogs.joined(separator: ","))]
         }
         """
-
+        print("Log Entry: \(logEntry)")
         writeToFile(logEntry)
 
         // Send update to Flutter
@@ -150,18 +150,39 @@ public class DeviceMonitorPlugin: NSObject, FlutterPlugin, CLLocationManagerDele
         flutterChannel?.invokeMethod("locationUpdate", arguments: data)
     }
 
-    private func writeToFile(_ data: String) {
-        // Write to a log file, app-specific storage
-        let fileManager = FileManager.default
-        if let directory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
-            let filePath = directory.appendingPathComponent("location_battery_log.txt")
+private func writeToFile(_ data: String) {
+    let fileManager = FileManager.default
+
+    // Get the directory where you want to store the file
+    if let directory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
+        let filePath = directory.appendingPathComponent("location_battery_log.txt")
+
+        // Ensure the directory exists
+        if !fileManager.fileExists(atPath: directory.path) {
             do {
-                try data.appendLineToURL(fileURL: filePath)
+                try fileManager.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
             } catch {
-                print("Error writing to file: \(error)")
+                print("Error creating directory: \(error)")
+                return
             }
         }
+
+        // Check if the file exists, and if not, create it
+        if !fileManager.fileExists(atPath: filePath.path) {
+            // Create the file if it doesn't exist
+            fileManager.createFile(atPath: filePath.path, contents: nil, attributes: nil)
+        }
+
+        // Now append the data to the file
+        do {
+            try data.appendLineToURL(fileURL: filePath)
+        } catch {
+            print("Error writing to file: \(error)")
+        }
     }
+}
+
+
 
     private func getBatteryLevel() -> Int {
         let device = UIDevice.current
